@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBSE PERFORMANCE BATCH REPORT - CLASS ANALYTICS</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#0B0F19',
+                            card: '#111827',
+                            accent1: '#00F0FF', // Cyan
+                            accent2: '#8B5CF6', // Purple
+                            accent3: '#10B981', // Teal
+                            border: '#1F2937'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        display: ['Poppins', 'ui-sans-serif', 'system-ui']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #0B0F19;
+            color: #E5E7EB;
+            overflow-x: hidden;
+        }
+        
+        .glass-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(31, 41, 55, 0.8);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glow-border:hover {
+            border-color: #00F0FF;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        }
+
+        .glow-border-purple:hover {
+            border-color: #8B5CF6;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #00F0FF, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0B0F19; }
+        ::-webkit-scrollbar-thumb { background: #1F2937; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fadeUp 0.3s ease-out forwards; }
+        
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-scale-in { animation: scaleIn 0.3s ease-out forwards; }
+    </style>
+</head>
+<body class="antialiased bg-grid relative">
+
+    <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-brand-accent1/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+    <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-brand-accent2/10 rounded-full blur-[150px] -z-10 pointer-events-none"></div>
+
+    <nav class="fixed top-0 w-full z-40 glass-card border-b border-brand-border/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0 font-display font-bold text-xl tracking-wider text-gradient">
+                    JNV CHAMPAWAT ANALYTICS
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-6 text-sm font-medium">
+                        <a href="#cover" class="hover:text-brand-accent1 transition-colors">Cover</a>
+                        <a href="#overview" class="hover:text-brand-accent1 transition-colors">Overview</a>
+                        <a href="#toppers" class="hover:text-brand-accent1 transition-colors">Toppers</a>
+                        <a href="#subjects" class="hover:text-brand-accent1 transition-colors">Subjects</a>
+                        <a href="#streams" class="hover:text-brand-accent1 transition-colors">Streams</a>
+                        <a href="#gender" class="hover:text-brand-accent1 transition-colors">Gender</a>
+                        <a href="#insights" class="hover:text-brand-accent1 transition-colors">Insights</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="app-content">
+        <div class="min-h-screen flex items-center justify-center">
+            <div class="text-center animate-pulse">
+                <div class="w-16 h-16 border-4 border-brand-accent1 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <h2 class="text-xl font-display text-brand-accent1">Processing PDF Data...</h2>
+            </div>
+        </div>
+    </div>
+
+    <div id="studentModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="glass-card w-full max-w-2xl rounded-2xl relative z-10 animate-scale-in overflow-hidden flex flex-col max-h-[90vh] shadow-2xl shadow-brand-accent1/10 border-brand-border">
+            <div class="p-6 border-b border-gray-800 flex justify-between items-start bg-gray-900/80">
+                <div>
+                    <h2 id="modalStudentName" class="text-2xl font-bold text-white uppercase tracking-wide">Name</h2>
+                    <div class="flex gap-3 mt-2 text-sm flex-wrap">
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-brand-accent1 font-medium" id="modalStudentRoll">Roll No</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-brand-accent2 font-medium" id="modalStudentStream">Stream</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-brand-accent3 font-medium" id="modalStudentGender">Gender</span>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white transition-colors p-1 bg-gray-800 rounded-full hover:bg-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto custom-scrollbar">
+                <p class="text-xs text-gray-500 mb-3 italic">Tip: Click on a subject row to view the student's rank in that subject.</p>
+                <table class="w-full text-left text-sm mb-6">
+                    <thead class="text-gray-400 border-b border-gray-800 uppercase text-xs tracking-wider">
+                        <tr>
+                            <th class="pb-3 font-semibold">Subject</th>
+                            <th class="pb-3 font-semibold text-center">TH</th>
+                            <th class="pb-3 font-semibold text-center">PR/IA</th>
+                            <th class="pb-3 font-semibold text-center">Total</th>
+                            <th class="pb-3 font-semibold text-right">Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalSubjectsTable" class="text-gray-200">
+                    </tbody>
+                </table>
+                
+                <div class="flex flex-col sm:flex-row flex-wrap gap-4 justify-between items-center bg-gradient-to-r from-gray-800/50 to-gray-900/50 p-5 rounded-xl border border-gray-700/50">
+                    <div class="text-center">
+                        <div class="text-xs text-gray-400 uppercase tracking-wide mb-1">Total (Top 5)</div>
+                        <div id="modalTotal" class="text-3xl font-bold text-white">0</div>
+                    </div>
+                    <div class="w-[1px] h-10 bg-gray-700 hidden sm:block"></div>
+                    <div class="text-center">
+                        <div class="text-xs text-gray-400 uppercase tracking-wide mb-1">Total (All 6)</div>
+                        <div id="modalTotalAll" class="text-3xl font-bold text-white">0</div>
+                    </div>
+                    <div class="w-[1px] h-10 bg-gray-700 hidden sm:block"></div>
+                    <div class="text-center">
+                        <div class="text-xs text-gray-400 uppercase tracking-wide mb-1">Percentage (Top 5)</div>
+                        <div id="modalPercentage" class="text-3xl font-bold text-brand-accent1">0%</div>
+                    </div>
+                    <div class="w-[1px] h-10 bg-gray-700 hidden sm:block"></div>
+                    <div class="text-right">
+                        <div class="text-xs text-gray-400 uppercase tracking-wide mb-1">Result Status</div>
+                        <div id="modalResult" class="text-2xl font-black text-brand-accent3 tracking-widest">PASS</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="directoryModal" class="fixed inset-0 z-[90] hidden flex items-center justify-center p-2 opacity-0 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeDirectoryModal()"></div>
+        <div class="glass-card w-full h-full max-w-[95vw] max-h-[95vh] rounded-2xl relative z-10 animate-scale-in flex flex-col md:flex-row overflow-hidden border-brand-border">
+            
+            <div class="w-full md:w-80 bg-gray-900/95 border-r border-gray-800 flex flex-col h-full shrink-0">
+                <div class="p-4 border-b border-gray-800 flex justify-between items-center">
+                    <h3 class="font-display font-bold text-lg text-brand-accent1 tracking-wide">STUDENT DIRECTORY</h3>
+                    <button onclick="closeDirectoryModal()" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                
+                <div class="p-4 overflow-y-auto custom-scrollbar flex-1 space-y-6">
+                    <div>
+                        <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Filters</h4>
+                        <div class="space-y-3 text-sm">
+                            <div>
+                                <label class="block text-gray-400 mb-1">Stream</label>
+                                <select id="dirFilterStream" onchange="updateDirectory()" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white focus:outline-none focus:border-brand-accent1">
+                                    <option value="All">All Streams</option>
+                                    <option value="PCM">PCM</option>
+                                    <option value="PCB">PCB</option>
+                                    <option value="Commerce">Commerce</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Gender</label>
+                                <select id="dirFilterGender" onchange="updateDirectory()" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white focus:outline-none focus:border-brand-accent1">
+                                    <option value="All">All</option>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Has Subject</label>
+                                <select id="dirFilterSubject" onchange="updateDirectory()" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white focus:outline-none focus:border-brand-accent1">
+                                    <option value="All">All Subjects</option>
+                                    </select>
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="flex-1">
+                                    <label class="block text-gray-400 mb-1">Min %</label>
+                                    <input type="number" id="dirFilterMin" value="0" min="0" max="100" onchange="updateDirectory()" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white focus:outline-none focus:border-brand-accent1">
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block text-gray-400 mb-1">Max %</label>
+                                    <input type="number" id="dirFilterMax" value="100" min="0" max="100" onchange="updateDirectory()" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white focus:outline-none focus:border-brand-accent1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="border-gray-800">
+
+                    <div>
+                        <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Sort By</h4>
+                        <div class="space-y-3 text-sm">
+                            <select id="dirSort" onchange="updateDirectory()" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white focus:outline-none focus:border-brand-accent1">
+                                <option value="pTop5">Percentage (Top 5)</option>
+                                <option value="pMain5">Percentage (Main 5)</option>
+                                <option value="pAll6">Percentage (All 6)</option>
+                                <option value="name">Name</option>
+                                <option value="roll">Roll No</option>
+                                </select>
+                            <label class="flex items-center gap-2 text-gray-300 cursor-pointer">
+                                <input type="checkbox" id="dirSortDesc" checked onchange="updateDirectory()" class="accent-brand-accent1 w-4 h-4 rounded bg-gray-800 border-gray-700">
+                                Descending Order
+                            </label>
+                        </div>
+                    </div>
+
+                    <hr class="border-gray-800">
+
+                    <div>
+                        <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Display Fields</h4>
+                        <div class="space-y-2 text-sm max-h-48 overflow-y-auto custom-scrollbar pr-2" id="dirFieldsContainer">
+                            </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-gray-800">
+                    <button onclick="resetDirectory()" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-medium py-2 rounded-lg transition-colors border border-gray-700">
+                        Reset All
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-1 bg-black/40 flex flex-col overflow-hidden">
+                <div class="p-4 border-b border-gray-800 flex justify-between items-center bg-gray-900/60 shrink-0">
+                    <h3 class="text-lg font-medium text-white">Results: <span id="dirResultsCount" class="text-brand-accent1 font-bold">0</span></h3>
+                </div>
+                <div class="flex-1 overflow-auto custom-scrollbar relative">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="text-gray-400 uppercase text-xs tracking-wider sticky top-0 bg-gray-900/95 backdrop-blur-md z-10 shadow-sm shadow-gray-900 border-b border-gray-800" id="dirTableHeader">
+                            </thead>
+                        <tbody id="dirTableBody" class="text-gray-300 divide-y divide-gray-800/50">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="subjectModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeSubjectModal()"></div>
+        <div class="glass-card w-full max-w-2xl rounded-2xl relative z-10 animate-scale-in overflow-hidden flex flex-col max-h-[90vh] shadow-2xl shadow-brand-accent2/10 border-brand-border">
+            <div class="p-6 border-b border-gray-800 flex justify-between items-start bg-gray-900/80">
+                <div>
+                    <h2 id="modalSubjectTitle" class="text-2xl font-bold text-white uppercase tracking-wide">Subject Name</h2>
+                </div>
+                <button onclick="closeSubjectModal()" class="text-gray-400 hover:text-white transition-colors p-1 bg-gray-800 rounded-full hover:bg-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-0 overflow-y-auto custom-scrollbar relative">
+                <table class="w-full text-left text-sm">
+                    <thead class="text-gray-400 border-b border-gray-800 uppercase text-xs tracking-wider sticky top-0 bg-gray-900/95 backdrop-blur-md z-10">
+                        <tr>
+                            <th class="py-4 px-6 font-semibold">Rank</th>
+                            <th class="py-4 px-6 font-semibold">Name</th>
+                            <th class="py-4 px-6 font-semibold text-center">Roll No</th>
+                            <th class="py-4 px-6 font-semibold text-right">Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalSubjectLeaderboardTable" class="text-gray-200"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="streamModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeStreamModal()"></div>
+        <div class="glass-card w-full max-w-2xl rounded-2xl relative z-10 animate-scale-in overflow-hidden flex flex-col max-h-[90vh] shadow-2xl shadow-brand-accent3/10 border-brand-border">
+            <div class="p-6 border-b border-gray-800 flex justify-between items-start bg-gray-900/80">
+                <div>
+                    <h2 id="modalStreamTitle" class="text-2xl font-bold text-white uppercase tracking-wide">Stream Name</h2>
+                </div>
+                <button onclick="closeStreamModal()" class="text-gray-400 hover:text-white transition-colors p-1 bg-gray-800 rounded-full hover:bg-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-0 overflow-y-auto custom-scrollbar relative">
+                <table class="w-full text-left text-sm">
+                    <thead class="text-gray-400 border-b border-gray-800 uppercase text-xs tracking-wider sticky top-0 bg-gray-900/95 backdrop-blur-md z-10">
+                        <tr>
+                            <th class="py-4 px-6 font-semibold">Rank</th>
+                            <th class="py-4 px-6 font-semibold">Name</th>
+                            <th class="py-4 px-6 font-semibold text-center">Roll No</th>
+                            <th class="py-4 px-6 font-semibold text-right">Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalStreamLeaderboardTable" class="text-gray-200"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script id="raw-data" type="text/plain">
+"Roll No:","25605093"
+"Candidate Name:","AARJU KHARKWAL"
+"Gender:","F"
+"Mother's Name:","REKHA KHARKWAL"
+"Father's Name:","MOHAN CHANDRA KHARKWAL"
+"301","ENGLISH CORE","073","020","093","A1"
+"041","MATHEMATICS","052","020","072","B1"
+"042","PHYSICS","056","030","086","A1"
+"043","CHEMISTRY","057","030","087","A1"
+"083","COMPUTER SCIENCE","064","030","094","A1"
+"841","YOGA","045","050","095","A2"
+"Result: PASS"
+
+"Roll No:","25605094"
+"Candidate Name:","AKANKSHA JOSHI"
+"Gender:","F"
+"Mother's Name:","MAMTA JOSHI"
+"Father's Name:","MOHAN CHANDRA JOSHI"
+"301","ENGLISH CORE","074","020","094","A1"
+"041","MATHEMATICS","026","020","046","D1"
+"042","PHYSICS","025","030","055","C2"
+"043","CHEMISTRY","023","029","052","D1"
+"083","COMPUTER SCIENCE","058","030","088","A2"
+"841","YOGA","043","050","093","B1"
+"Result: PASS"
+
+"Roll No:","25605095"
+"Candidate Name:","DEEPIKA MAHRA"
+"Gender:","F"
+"Mother's Name:","LAXMI DEVI"
+"Father's Name:","SHYAM SINGH MAHRA"
+"301","ENGLISH CORE","054","020","074","C1"
+"041","MATHEMATICS","047","020","067","B1"
+"042","PHYSICS","031","030","061","B2"
+"043","CHEMISTRY","045","030","075","B1"
+"083","COMPUTER SCIENCE","059","030","089","A2"
+"841","YOGA","042","050","092","B1"
+"Result: PASS"
+
+"Roll No:","25605096"
+"Candidate Name:","DIYA BURATHI"
+"Gender:","F"
+"Mother's Name:","NISHA DEVI"
+"Father's Name:","LAXMAN SINGH BURATHI"
+"301","ENGLISH CORE","068","020","088","A2"
+"302","HINDI CORE","060","020","080","B2"
+"041","MATHEMATICS","026","020","046","D1"
+"042","PHYSICS","023","030","053","D1"
+"043","CHEMISTRY","035","030","065","B2"
+"841","YOGA","046","047","093","B1"
+"Result: PASS"
+
+"Roll No:","25605097"
+"Candidate Name:","GARIMA JOSHI I"
+"Gender:","F"
+"Mother's Name:","MAMTA JOSHI"
+"Father's Name:","GIRISH CHANDRA JOSHI"
+"301","ENGLISH CORE","073","020","093","A1"
+"041","MATHEMATICS","026","020","046","D1"
+"042","PHYSICS","025","030","055","C2"
+"043","CHEMISTRY","023","030","053","D1"
+"083","COMPUTER SCIENCE","056","029","085","B1"
+"841","YOGA","040","050","090","B2"
+"Result: PASS"
+
+"Roll No:","25605098"
+"Candidate Name:","GARIMA JOSHI II"
+"Gender:","F"
+"Mother's Name:","KESHAVI DEVI"
+"Father's Name:","RAMESH CHANDRA"
+"301","ENGLISH CORE","067","020","087","B1"
+"302","HINDI CORE","071","020","091","A2"
+"041","MATHEMATICS","044","020","064","B2"
+"042","PHYSICS","042","030","072","A2"
+"043","CHEMISTRY","037","030","067","B2"
+"841","YOGA","047","047","094","A2"
+"Result: PASS"
+
+"Roll No:","25605099"
+"Candidate Name:","HIMANSHI CHAND"
+"Gender:","F"
+"Mother's Name:","NEEMA CHAND"
+"Father's Name:","GANESH CHAND"
+"301","ENGLISH CORE","067","020","087","B1"
+"041","MATHEMATICS","026","020","046","D1"
+"042","PHYSICS","024","030","054","C2"
+"043","CHEMISTRY","024","030","054","C2"
+"083","COMPUTER SCIENCE","052","030","082","B1"
+"841","YOGA","038","047","085","C2"
+"Result: PASS"
+
+"Roll No:","25605100"
+"Candidate Name:","KANAK SIRARI"
+"Gender:","F"
+"Mother's Name:","KIRAN SIRARI"
+"Father's Name:","TRIBHUWAN SIRARI"
+"301","ENGLISH CORE","057","020","077","C1"
+"041","MATHEMATICS","026","020","046","D1"
+"042","PHYSICS","023","030","053","D1"
+"043","CHEMISTRY","024","030","054","C2"
+"083","COMPUTER SCIENCE","067","030","097","A1"
+"841","YOGA","042","050","092","B1"
+"Result: PASS"
+
+"Roll No:","25605101"
+"Candidate Name:","KASHISH SAMANT"
+"Gender:","F"
+"Mother's Name:","KAMLA DEVI"
+"Father's Name:","KAILASH SINGH SAMANT"
+"301","ENGLISH CORE","065","020","085","B1"
+"302","HINDI CORE","077","020","097","A1"
+"041","MATHEMATICS","041","020","061","B2"
+"042","PHYSICS","038","030","068","B1"
+"043","CHEMISTRY","038","030","068","B2"
+"841","YOGA","043","050","093","B1"
+"Result: PASS"
+
+"Roll No:","25605102"
+"Candidate Name:","POOJA MAHAR"
+"Gender:","F"
+"Mother's Name:","GOVINDI DEVI"
+"Father's Name:","JEET SINGH"
+"301","ENGLISH CORE","051","020","071","C2"
+"302","HINDI CORE","075","019","094","A1"
+"041","MATHEMATICS","026","020","046","D1"
+"042","PHYSICS","026","030","056","C1"
+"043","CHEMISTRY","023","030","053","D1"
+"841","YOGA","035","050","085","C2"
+"Result: PASS"
+
+"Roll No:","25605103"
+"Candidate Name:","RANI MAHAR"
+"Gender:","F"
+"Mother's Name:","REKHA DEVI"
+"Father's Name:","KHEEM SINGH"
+"301","ENGLISH CORE","062","020","082","B2"
+"302","HINDI CORE","077","020","097","A1"
+"041","MATHEMATICS","053","020","073","B1"
+"042","PHYSICS","041","030","071","A2"
+"043","CHEMISTRY","040","030","070","B1"
+"841","YOGA","043","050","093","B1"
+"Result: PASS"
+
+"Roll No:","25605104"
+"Candidate Name:","SHEETAL MEHTA"
+"Gender:","F"
+"Mother's Name:","NANDA DEVI"
+"Father's Name:","SHYAM SINGH MEHTA"
+"301","ENGLISH CORE","067","020","087","B1"
+"041","MATHEMATICS","062","020","082","A2"
+"042","PHYSICS","060","030","090","A1"
+"043","CHEMISTRY","048","030","078","A2"
+"083","COMPUTER SCIENCE","064","030","094","A1"
+"841","YOGA","049","050","099","A1"
+"Result: PASS"
+
+"Roll No:","25605105"
+"Candidate Name:","TANUJA FARTYAL"
+"Gender:","F"
+"Mother's Name:","GANGA DEVI"
+"Father's Name:","NAVEEN SINGH FARTYAL"
+"301","ENGLISH CORE","076","020","096","A1"
+"041","MATHEMATICS","034","019","053","C2"
+"042","PHYSICS","027","030","057","C1"
+"043","CHEMISTRY","025","030","055","C2"
+"083","COMPUTER SCIENCE","066","030","096","A1"
+"841","YOGA","045","050","095","A2"
+"Result: PASS"
+
+"Roll No:","25605106"
+"Candidate Name:","VAISHNAVI BOHRA"
+"Gender:","F"
+"Mother's Name:","BABITA BOHRA"
+"Father's Name:","HIRA SINGH BOHRA"
+"301","ENGLISH CORE","075","020","095","A1"
+"302","HINDI CORE","074","020","094","A1"
+"041","MATHEMATICS","041","019","060","B2"
+"042","PHYSICS","042","030","072","A2"
+"043","CHEMISTRY","039","030","069","B2"
+"841","YOGA","045","049","094","A2"
+"Result: PASS"
+
+"Roll No:","25605107"
+"Candidate Name:","AARYAN SINGH ADHIKARI"
+"Gender:","M"
+"Mother's Name:","PREMA DEVI"
+"Father's Name:","KUNDAN SINGH"
+"301","ENGLISH CORE","049","020","069","C2"
+"302","HINDI CORE","072","020","092","A1"
+"041","MATHEMATICS","026","019","045","D2"
+"042","PHYSICS","023","030","053","D1"
+"043","CHEMISTRY","006","030","036 RT","E"
+"841","YOGA","035","047","082","D1"
+"Result: PASS"
+
+"Roll No:","25605108"
+"Candidate Name:","AMAN SINGH JYAL"
+"Gender:","M"
+"Mother's Name:","HEMA DEVI"
+"Father's Name:","MAHENDRA SINGH JYAL"
+"301","ENGLISH CORE","064","018","082","B2"
+"302","HINDI CORE","074","019","093","A1"
+"041","MATHEMATICS","037","020","057","C1"
+"042","PHYSICS","031","029","060","B2"
+"043","CHEMISTRY","023","029","052","D1"
+"841","YOGA","034","045","079","D1"
+"Result: PASS"
+
+"Roll No:","25605109"
+"Candidate Name:","AMAN SINGH MEHTA"
+"Gender:","M"
+"Mother's Name:","BHAGWATI MEHTA"
+"Father's Name:","PRAKASH SINGH MEHTA"
+"301","ENGLISH CORE","055","019","074","C1"
+"302","HINDI CORE","060","019","079","C1"
+"041","MATHEMATICS","038","020","058","C1"
+"042","PHYSICS","033","029","062","B2"
+"043","CHEMISTRY","023","028","051","D2"
+"841","YOGA","038","045","083","C2"
+"Result: PASS"
+
+"Roll No:","25605110"
+"Candidate Name:","ARSHAY SHARMA"
+"Gender:","M"
+"Mother's Name:","NEELAM SHARMA"
+"Father's Name:","RAMESH CHANDRA SHARMA"
+"301","ENGLISH CORE","070","020","090","A2"
+"041","MATHEMATICS","035","020","055","C1"
+"042","PHYSICS","031","030","061","B2"
+"043","CHEMISTRY","023","030","053","D1"
+"083","COMPUTER SCIENCE","064","030","094","A1"
+"841","YOGA","044","050","094","A2"
+"Result: PASS"
+
+"Roll No:","25605111"
+"Candidate Name:","AYUSH BISHT"
+"Gender:","M"
+"Mother's Name:","MANJU DEVI"
+"Father's Name:","JOT SINGH BISHT"
+"301","ENGLISH CORE","057","020","077","C1"
+"041","MATHEMATICS","044","019","063","B2"
+"042","PHYSICS","030","030","060","B2"
+"043","CHEMISTRY","026","030","056","C2"
+"083","COMPUTER SCIENCE","063","030","093","A1"
+"841","YOGA","039","047","086","C1"
+"Result: PASS"
+
+"Roll No:","25605112"
+"Candidate Name:","AYUSH SINGH"
+"Gender:","M"
+"Mother's Name:","KALAWATI DEVI"
+"Father's Name:","SOBAN SINGH"
+"301","ENGLISH CORE","039","019","058","D1"
+"302","HINDI CORE","077","018","095","A1"
+"041","MATHEMATICS","050","020","070","B1"
+"042","PHYSICS","031","030","061","B2"
+"043","CHEMISTRY","034","030","064","B2"
+"841","YOGA","038","045","083","C2"
+"Result: PASS"
+
+"Roll No:","25605113"
+"Candidate Name:","AYUSH TIWARI"
+"Gender:","M"
+"Mother's Name:","ANITA TIWARI"
+"Father's Name:","BHUWAN CHANDRA TIWARI"
+"301","ENGLISH CORE","059","020","079","B2"
+"041","MATHEMATICS","026","020","046","D1"
+"042","PHYSICS","033","030","063","B2"
+"043","CHEMISTRY","023","030","053","D1"
+"083","COMPUTER SCIENCE","054","029","083","B1"
+"841","YOGA","041","047","088","C1"
+"Result: PASS"
+
+"Roll No:","25605114"
+"Candidate Name:","BHASKAR SINGH"
+"Gender:","M"
+"Mother's Name:","PARWATI DEVI"
+"Father's Name:","GOVIND SINGH"
+"301","ENGLISH CORE","056","020","076","C1"
+"041","MATHEMATICS","031","020","051","C2"
+"042","PHYSICS","028","030","058","C1"
+"043","CHEMISTRY","024","030","054","C2"
+"083","COMPUTER SCIENCE","060","030","090","A2"
+"841","YOGA","044","050","094","A2"
+"Result: PASS"
+
+"Roll No:","25605115"
+"Candidate Name:","HARSH KHARKWAL"
+"Gender:","M"
+"Mother's Name:","MEENA KHARKWAL"
+"Father's Name:","SUNIL DATT KHARKWAL"
+"301","ENGLISH CORE","044","020","064","D1"
+"041","MATHEMATICS","037","019","056","C1"
+"042","PHYSICS","033","030","063","B2"
+"043","CHEMISTRY","023","030","053","D1"
+"083","COMPUTER SCIENCE","057","030","087","A2"
+"841","YOGA","032","050","082","D1"
+"Result: PASS"
+
+"Roll No:","25605116"
+"Candidate Name:","HARSHIT KUMAR"
+"Gender:","M"
+"Mother's Name:","RENU DEVI"
+"Father's Name:","NAVEEN KUMAR"
+"301","ENGLISH CORE","053","020","073","C2"
+"302","HINDI CORE","068","020","088","A2"
+"041","MATHEMATICS","037","019","056","C1"
+"042","PHYSICS","024","030","054","C2"
+"043","CHEMISTRY","023","030","053","D1"
+"841","YOGA","036","050","086","C1"
+"Result: PASS"
+
+"Roll No:","25605117"
+"Candidate Name:","KAMAL JOSHI"
+"Gender:","M"
+"Mother's Name:","MADHAVI JOSHI"
+"Father's Name:","SHANKAR JOSHI"
+"301","ENGLISH CORE","064","019","083","B2"
+"041","MATHEMATICS","029","019","048","C2"
+"042","PHYSICS","023","029","052","D1"
+"043","CHEMISTRY","007","028","035 RT","E"
+"083","COMPUTER SCIENCE","066","029","095","A1"
+"841","YOGA","034","050","084","C2"
+"Result: PASS"
+
+"Roll No:","25605118"
+"Candidate Name:","KAPIL JOSHI"
+"Gender:","M"
+"Mother's Name:","SHOBHA JOSHI"
+"Father's Name:","HARISH CHANDRA JOSHI"
+"301","ENGLISH CORE","069","020","089","A2"
+"041","MATHEMATICS","057","020","077","A2"
+"042","PHYSICS","048","030","078","A2"
+"043","CHEMISTRY","054","030","084","A2"
+"083","COMPUTER SCIENCE","051","030","081","B1"
+"841","YOGA","041","050","091","B2"
+"Result: PASS"
+
+"Roll No:","25605119"
+"Candidate Name:","KAPIL SINGH"
+"Gender:","M"
+"Mother's Name:","BABITA DEVI"
+"Father's Name:","DHAN SINGH"
+"301","ENGLISH CORE","064","020","084","B1"
+"041","MATHEMATICS","060","020","080","A2"
+"042","PHYSICS","052","030","082","A1"
+"043","CHEMISTRY","039","030","069","B2"
+"083","COMPUTER SCIENCE","063","030","093","A1"
+"841","YOGA","039","050","089","B2"
+"Result: PASS"
+
+"Roll No:","25605120"
+"Candidate Name:","MAYANK JOSHI"
+"Gender:","M"
+"Mother's Name:","VIMLA JOSHI"
+"Father's Name:","GANESH DUTT JOSHI"
+"301","ENGLISH CORE","057","020","077","C1"
+"041","MATHEMATICS","035","019","054","C1"
+"042","PHYSICS","033","030","063","B2"
+"043","CHEMISTRY","023","030","053","D1"
+"083","COMPUTER SCIENCE","064","029","093","A1"
+"841","YOGA","034","050","084","C2"
+"Result: PASS"
+
+"Roll No:","25605121"
+"Candidate Name:","MAYANK SHARMA"
+"Gender:","M"
+"Mother's Name:","MEERA SHARMA"
+"Father's Name:","HARISH CHANDRA SHARMA"
+"301","ENGLISH CORE","068","018","086","B1"
+"302","HINDI CORE","077","019","096","A1"
+"041","MATHEMATICS","036","020","056","C1"
+"042","PHYSICS","029","030","059","C1"
+"043","CHEMISTRY","024","030","054","C2"
+"841","YOGA","041","049","090","B2"
+"Result: PASS"
+
+"Roll No:","25605122"
+"Candidate Name:","MOHIT GAHTORI"
+"Gender:","M"
+"Mother's Name:","HEMA DEVI"
+"Father's Name:","GIRISH CHANDRA GAHTORI"
+"301","ENGLISH CORE","061","020","081","B2"
+"041","MATHEMATICS","053","020","073","B1"
+"042","PHYSICS","035","030","065","B1"
+"043","CHEMISTRY","035","030","065","B2"
+"083","COMPUTER SCIENCE","060","030","090","A2"
+"841","YOGA","035","049","084","C2"
+"Result: PASS"
+
+"Roll No:","25605123"
+"Candidate Name:","MUKESH SINGH BOHRA"
+"Gender:","M"
+"Mother's Name:","DIGARI DEVI"
+"Father's Name:","FAKIR SINGH"
+"301","ENGLISH CORE","068","020","088","A2"
+"041","MATHEMATICS","045","020","065","B2"
+"042","PHYSICS","048","030","078","A2"
+"043","CHEMISTRY","039","030","069","B2"
+"083","COMPUTER SCIENCE","067","030","097","A1"
+"841","YOGA","040","050","090","B2"
+"Result: PASS"
+
+"Roll No:","25605124"
+"Candidate Name:","NAKUL SINGH DHAUNI"
+"Gender:","M"
+"Mother's Name:","NITU DHAUNI"
+"Father's Name:","KRISHNA SINGH DHAUNI"
+"301","ENGLISH CORE","057","020","077","C1"
+"041","MATHEMATICS","028","020","048","C2"
+"042","PHYSICS","023","028","051","D2"
+"043","CHEMISTRY","023","028","051","D2"
+"083","COMPUTER SCIENCE","040","029","069","C1"
+"841","YOGA","043","040","083","C2"
+"Result: PASS"
+
+"Roll No:","25605125"
+"Candidate Name:","PAWAN BHATT"
+"Gender:","M"
+"Mother's Name:","GEETA DEVI"
+"Father's Name:","MANOJ BHATT"
+"301","ENGLISH CORE","067","020","087","B1"
+"041","MATHEMATICS","068","020","088","A1"
+"042","PHYSICS","060","030","090","A1"
+"043","CHEMISTRY","036","030","066","B2"
+"083","COMPUTER SCIENCE","068","030","098","A1"
+"841","YOGA","035","040","075","D2"
+"Result: PASS"
+
+"Roll No:","25605126"
+"Candidate Name:","PRADEEP SINGH"
+"Gender:","M"
+"Mother's Name:","ISHWARI DEVI"
+"Father's Name:","GOVIND SINGH"
+"301","ENGLISH CORE","054","020","074","C1"
+"302","HINDI CORE","077","019","096","A1"
+"041","MATHEMATICS","045","020","065","B2"
+"042","PHYSICS","045","030","075","A2"
+"043","CHEMISTRY","024","030","054","C2"
+"841","YOGA","040","049","089","B2"
+"Result: PASS"
+
+"Roll No:","25605127"
+"Candidate Name:","RAJENDRA SINGH"
+"Gender:","M"
+"Mother's Name:","GANGA DEVI"
+"Father's Name:","SHYAM SINGH"
+"301","ENGLISH CORE","061","020","081","B2"
+"041","MATHEMATICS","039","020","059","C1"
+"042","PHYSICS","023","030","053","D1"
+"043","CHEMISTRY","025","030","055","C2"
+"083","COMPUTER SCIENCE","068","030","098","A1"
+"841","YOGA","031","048","079","D1"
+"Result: PASS"
+
+"Roll No:","25605128"
+"Candidate Name:","RUDRANSH SINGH"
+"Gender:","M"
+"Mother's Name:","SARIKA GUPTA"
+"Father's Name:","VIJENDRA SINGH"
+"301","ENGLISH CORE","073","020","093","A1"
+"302","HINDI CORE","078","020","098","A1"
+"041","MATHEMATICS","061","020","081","A2"
+"042","PHYSICS","052","030","082","A1"
+"043","CHEMISTRY","049","030","079","A2"
+"841","YOGA","043","050","093","B1"
+"Result: PASS"
+
+"Roll No:","25605129"
+"Candidate Name:","SACHIN KUMAR"
+"Gender:","M"
+"Mother's Name:","BHUWNESHWARI DEVI"
+"Father's Name:","NARAYAN RAM"
+"301","ENGLISH CORE","062","020","082","B2"
+"302","HINDI CORE","050","020","070","C2"
+"041","MATHEMATICS","026","019","045","D2"
+"042","PHYSICS","025","030","055","C2"
+"043","CHEMISTRY","023","030","053","D1"
+"841","YOGA","042","049","091","B2"
+"Result: PASS"
+
+"Roll No:","25605130"
+"Candidate Name:","SANDEEP SINGH"
+"Gender:","M"
+"Mother's Name:","RADHA DEVI"
+"Father's Name:","DIWAN SINGH"
+"301","ENGLISH CORE","057","020","077","C1"
+"302","HINDI CORE","060","019","079","C1"
+"041","MATHEMATICS","026","019","045","D2"
+"042","PHYSICS","025","030","055","C2"
+"043","CHEMISTRY","023","029","052","D1"
+"841","YOGA","041","050","091","B2"
+"Result: PASS"
+
+"Roll No:","25605131"
+"Candidate Name:","SAURABH SUTERI"
+"Gender:","M"
+"Mother's Name:","KAMLA SUTERI"
+"Father's Name:","RAJENDRA SUTERI"
+"301","ENGLISH CORE","050","020","070","C2"
+"302","HINDI CORE","066","019","085","B1"
+"041","MATHEMATICS","036","020","056","C1"
+"042","PHYSICS","038","030","068","B1"
+"043","CHEMISTRY","023","029","052","D1"
+"841","YOGA","034","045","079","D1"
+"Result: PASS"
+
+"Roll No:","25605132"
+"Candidate Name:","SIDDHANT KARNATAK"
+"Gender:","M"
+"Mother's Name:","ASHA KARNATAK"
+"Father's Name:","LAXMI NARAYAN KARNATAK"
+"301","ENGLISH CORE","053","020","073","C2"
+"041","MATHEMATICS","030","020","050","C2"
+"042","PHYSICS","032","030","062","B2"
+"043","CHEMISTRY","023","030","053","D1"
+"083","COMPUTER SCIENCE","067","030","097","A1"
+"841","YOGA","037","039","076","D2"
+"Result: PASS"
+
+"Roll No:","25605133"
+"Candidate Name:","AYUSHI KUMARI"
+"Gender:","F"
+"Mother's Name:","MADHU TOMAR"
+"Father's Name:","HARPAL SINGH"
+"301","ENGLISH CORE","064","020","084","B1"
+"302","HINDI CORE","070","020","090","A2"
+"042","PHYSICS","026","030","056","C1"
+"043","CHEMISTRY","039","030","069","B2"
+"044","BIOLOGY","062","030","092","A1"
+"841","YOGA","044","050","094","A2"
+"Result: PASS"
+
+"Roll No:","25605134"
+"Candidate Name:","NIKITA JOSHI"
+"Gender:","F"
+"Mother's Name:","ASHA JOSHI"
+"Father's Name:","DINESH CHANDRA JOSHI"
+"301","ENGLISH CORE","071","020","091","A2"
+"302","HINDI CORE","058","020","078","C1"
+"042","PHYSICS","048","030","078","A2"
+"043","CHEMISTRY","051","030","081","A2"
+"044","BIOLOGY","068","030","098","A1"
+"841","YOGA","046","050","096","A2"
+"Result: PASS"
+
+"Roll No:","25605135"
+"Candidate Name:","SANGEETA BHATT"
+"Gender:","F"
+"Mother's Name:","CHANDRAKALA BHATT"
+"Father's Name:","BALDEV BHATT"
+"301","ENGLISH CORE","069","020","089","A2"
+"302","HINDI CORE","073","020","093","A1"
+"042","PHYSICS","038","030","068","B1"
+"043","CHEMISTRY","032","030","062","C1"
+"044","BIOLOGY","065","030","095","A1"
+"841","YOGA","036","049","085","C2"
+"Result: PASS"
+
+"Roll No:","25605136"
+"Candidate Name:","SHRISHTI HYANKI"
+"Gender:","F"
+"Mother's Name:","ANJANI HYANKI"
+"Father's Name:","KRISHAN SINGH HYANKI"
+"301","ENGLISH CORE","075","020","095","A1"
+"302","HINDI CORE","067","019","086","B1"
+"042","PHYSICS","023","030","053","D1"
+"043","CHEMISTRY","024","029","053","D1"
+"044","BIOLOGY","067","030","097","A1"
+"841","YOGA","041","050","091","B2"
+"Result: PASS"
+
+"Roll No:","25605137"
+"Candidate Name:","SUHANI"
+"Gender:","F"
+"Mother's Name:","SUNITA"
+"Father's Name:","DINESH RAM"
+"301","ENGLISH CORE","066","020","086","B1"
+"302","HINDI CORE","055","020","075","C1"
+"042","PHYSICS","023","030","053","D1"
+"043","CHEMISTRY","023","030","053","D1"
+"044","BIOLOGY","047","029","076","B2"
+"841","YOGA","040","050","090","B2"
+"Result: PASS"
+
+"Roll No:","25605138"
+"Candidate Name:","SUHANI ARYA"
+"Gender:","F"
+"Mother's Name:","MADHAVI DEVI"
+"Father's Name:","CHANDRA RAM"
+"301","ENGLISH CORE","055","020","075","C1"
+"302","HINDI CORE","070","020","090","A2"
+"042","PHYSICS","037","030","067","B1"
+"043","CHEMISTRY","026","030","056","C2"
+"044","BIOLOGY","054","030","084","A2"
+"841","YOGA","040","050","090","B2"
+"Result: PASS"
+
+"Roll No:","25605139"
+"Candidate Name:","VAISHALI PANTOLA"
+"Gender:","F"
+"Mother's Name:","NEEMA PANTOLA"
+"Father's Name:","GOPAL DATT PANTOLA"
+"301","ENGLISH CORE","074","020","094","A1"
+"302","HINDI CORE","067","020","087","B1"
+"042","PHYSICS","027","030","057","C1"
+"043","CHEMISTRY","032","030","062","C1"
+"044","BIOLOGY","063","030","093","A1"
+"841","YOGA","047","049","096","A2"
+"Result: PASS"
+
+"Roll No:","25605140"
+"Candidate Name:","DEEPANSHU JOSHI"
+"Gender:","M"
+"Mother's Name:","CHAMPA DEVI"
+"Father's Name:","UMESH CHANDRA"
+"301","ENGLISH CORE","064","020","084","B1"
+"302","HINDI CORE","067","020","087","B1"
+"042","PHYSICS","033","030","063","B2"
+"043","CHEMISTRY","030","030","060","C1"
+"044","BIOLOGY","062","030","092","A1"
+"841","YOGA","039","050","089","B2"
+"Result: PASS"
+
+"Roll No:","25605143"
+"Candidate Name:","PAWAN MAHAR"
+"Gender:","M"
+"Mother's Name:","GOVINDI DEVI"
+"Father's Name:","JEET SINGH"
+"301","ENGLISH CORE","045","019","064","D1"
+"302","HINDI CORE","058","019","077","C1"
+"042","PHYSICS","026","029","055","C2"
+"043","CHEMISTRY","023","029","052","D1"
+"044","BIOLOGY","058","029","087","A2"
+"841","YOGA","037","048","085","C2"
+"Result: PASS"
+
+"Roll No:","25605141"
+"Candidate Name:","MUKESH JOSHI"
+"Gender:","M"
+"Mother's Name:","KAMLA DEVI"
+"Father's Name:","NAVEEN CHANDRA JOSHI"
+"301","ENGLISH CORE","044","020","064","D1"
+"302","HINDI CORE","062","020","082","B2"
+"042","PHYSICS","023","029","052","D1"
+"043","CHEMISTRY","023","030","053","D1"
+"044","BIOLOGY","043","029","072","B2"
+"841","YOGA","042","047","089","B2"
+"Result: PASS"
+
+"Roll No:","25605142"
+"Candidate Name:","NAVEEN CHANDRA"
+"Gender:","M"
+"Mother's Name:","NEELAWATI DEVI"
+"Father's Name:","RAMDUTT BHATT"
+"301","ENGLISH CORE","058","019","077","C1"
+"302","HINDI CORE","054","018","072","C2"
+"042","PHYSICS","037","029","066","B1"
+"043","CHEMISTRY","045","029","074","B1"
+"044","BIOLOGY","054","030","084","A2"
+"841","YOGA","032","048","080","D1"
+"Result: PASS"
+
+"Roll No:","25605144"
+"Candidate Name:","ROHIT NARIYAL"
+"Gender:","M"
+"Mother's Name:","NEHA NARIYAL"
+"Father's Name:","AMARNATH NARIYAL"
+"301","ENGLISH CORE","050","020","070","C2"
+"302","HINDI CORE","065","019","084","B1"
+"042","PHYSICS","010","029","039 RT","E"
+"044","BIOLOGY","023","028","051","D2"
+"043","CHEMISTRY","007","029","036 RT","E"
+"841","YOGA","031","040","071","D2"
+"Result: COMP"
+
+"Roll No:","25605145"
+"Candidate Name:","RIYA"
+"Gender:","F"
+"Mother's Name:","PARWATI DEVI"
+"Father's Name:","GOPAL RAM"
+"301","ENGLISH CORE","064","020","084","B1"
+"302","HINDI CORE","070","020","090","A2"
+"030","ECONOMICS","072","020","092","A1"
+"054","BUSINESS STUDIES","037","019","056","C2"
+"055","ACCOUNTANCY","036","019","055","C1"
+"841","YOGA","038","050","088","C1"
+"Result: PASS"
+
+"Roll No:","25605146"
+"Candidate Name:","SHALU BINWAL"
+"Gender:","F"
+"Mother's Name:","CHANCHALA DEVI"
+"Father's Name:","SHANKAR DATT BINWAL"
+"301","ENGLISH CORE","055","020","075","C1"
+"302","HINDI CORE","049","019","068","D1"
+"030","ECONOMICS","066","020","086","A2"
+"054","BUSINESS STUDIES","049","020","069","B2"
+"055","ACCOUNTANCY","056","020","076","B1"
+"841","YOGA","038","038","076","D2"
+"Result: PASS"
+
+"Roll No:","25605147"
+"Candidate Name:","SUMAN DHOUNI"
+"Gender:","F"
+"Mother's Name:","REKHA DHOUNI"
+"Father's Name:","BHAGWAN SINGH"
+"301","ENGLISH CORE","061","020","081","B2"
+"302","HINDI CORE","070","020","090","A2"
+"030","ECONOMICS","075","020","095","A1"
+"054","BUSINESS STUDIES","058","020","078","B1"
+"055","ACCOUNTANCY","061","020","081","A2"
+"841","YOGA","037","050","087","C1"
+"Result: PASS"
+
+"Roll No:","25605148"
+"Candidate Name:","AASHISH KUMAR"
+"Gender:","M"
+"Mother's Name:","MEENA DEVI"
+"Father's Name:","VINOD KUMAR"
+"301","ENGLISH CORE","075","020","095","A1"
+"302","HINDI CORE","063","019","082","B2"
+"030","ECONOMICS","068","020","088","A2"
+"054","BUSINESS STUDIES","056","020","076","B1"
+"055","ACCOUNTANCY","026","020","046","D1"
+"841","YOGA","032","040","072","D2"
+"Result: PASS"
+
+"Roll No:","25605149"
+"Candidate Name:","ASHMIT KUMAR"
+"Gender:","M"
+"Mother's Name:","MAMTA DEVI"
+"Father's Name:","KAILASH RAM"
+"301","ENGLISH CORE","040","020","060","D1"
+"302","HINDI CORE","058","018","076","C1"
+"030","ECONOMICS","045","020","065","C1"
+"054","BUSINESS STUDIES","029","020","049","D1"
+"055","ACCOUNTANCY","026","020","046","D1"
+"841","YOGA","020","040","060","D2"
+"Result: PASS"
+
+"Roll No:","25605150"
+"Candidate Name:","AYUSH RANA"
+"Gender:","M"
+"Mother's Name:","PUSHPA RANA"
+"Father's Name:","SURESH RANA"
+"301","ENGLISH CORE","045","018","063","D1"
+"302","HINDI CORE","064","017","081","B2"
+"030","ECONOMICS","042","018","060","C2"
+"054","BUSINESS STUDIES","034","020","054","C2"
+"055","ACCOUNTANCY","027","020","047","D1"
+"841","YOGA","022","040","062","D2"
+"Result: PASS"
+
+"Roll No:","25605151"
+"Candidate Name:","DEEPAK SINGH MEHTA"
+"Gender:","M"
+"Mother's Name:","VIMLA DEVI"
+"Father's Name:","LALIT SINGH MEHTA"
+"301","ENGLISH CORE","033","018","051","D2"
+"302","HINDI CORE","057","019","076","C1"
+"030","ECONOMICS","059","019","078","B1"
+"054","BUSINESS STUDIES","048","019","067","B2"
+"055","ACCOUNTANCY","026","019","045","D2"
+"841","YOGA","032","050","082","D1"
+"Result: PASS"
+
+"Roll No:","25605152"
+"Candidate Name:","MANISH KUMAR"
+"Gender:","M"
+"Mother's Name:","PARWATI DEVI"
+"Father's Name:","GIRISH RAM"
+"301","ENGLISH CORE","064","020","084","B1"
+"302","HINDI CORE","078","020","098","A1"
+"030","ECONOMICS","073","020","093","A1"
+"054","BUSINESS STUDIES","066","020","086","A2"
+"055","ACCOUNTANCY","064","020","084","A2"
+"841","YOGA","040","050","090","B2"
+"Result: PASS"
+
+"Roll No:","25605153"
+"Candidate Name:","MONU BOHRA"
+"Gender:","M"
+"Mother's Name:","BHAWANA DEVI"
+"Father's Name:","KHUSHAL SINGH"
+"301","ENGLISH CORE","043","020","063","D1"
+"302","HINDI CORE","057","020","077","C1"
+"030","ECONOMICS","045","020","065","C1"
+"054","BUSINESS STUDIES","050","020","070","B2"
+"055","ACCOUNTANCY","036","019","055","C1"
+"841","YOGA","028","050","078","D1"
+"Result: PASS"
+
+"Roll No:","25605154"
+"Candidate Name:","RAHUL KUMAR"
+"Gender:","M"
+"Mother's Name:","SUNITA DEVI"
+"Father's Name:","PRAHLAD RAM"
+"301","ENGLISH CORE","039","020","059","D1"
+"302","HINDI CORE","068","019","087","B1"
+"030","ECONOMICS","051","019","070","B2"
+"054","BUSINESS STUDIES","049","020","069","B2"
+"055","ACCOUNTANCY","026","020","046","D1"
+"841","YOGA","026","050","076","D2"
+"Result: PASS"
+
+"Roll No:","25605155"
+"Candidate Name:","RAHUL MAHAR"
+"Gender:","M"
+"Mother's Name:","MAMTA DEVI"
+"Father's Name:","JOHAR SINGH"
+"301","ENGLISH CORE","039","019","058","D1"
+"302","HINDI CORE","075","017","092","A1"
+"030","ECONOMICS","043","018","061","C2"
+"054","BUSINESS STUDIES","055","019","074","B1"
+"055","ACCOUNTANCY","026","019","045","D2"
+"841","YOGA","026","040","066","D2"
+"Result: PASS"
+
+"Roll No:","25605156"
+"Candidate Name:","ROHAN SAMANT"
+"Gender:","M"
+"Mother's Name:","REWATI SAMANT"
+"Father's Name:","MAHESH SINGH SAMANT"
+"301","ENGLISH CORE","055","020","075","C1"
+"302","HINDI CORE","074","019","093","A1"
+"030","ECONOMICS","074","020","094","A1"
+"054","BUSINESS STUDIES","062","020","082","A2"
+"055","ACCOUNTANCY","051","020","071","B1"
+"841","YOGA","031","050","081","D1"
+"Result: PASS"
+
+"Roll No:","25605157"
+"Candidate Name:","SAURABH KUMAR"
+"Gender:","M"
+"Mother's Name:","MAHESHWARI DEVI"
+"Father's Name:","HARI RAM"
+"301","ENGLISH CORE","056","019","075","C1"
+"302","HINDI CORE","077","019","096","A1"
+"030","ECONOMICS","068","020","088","A2"
+"054","BUSINESS STUDIES","058","020","078","B1"
+"055","ACCOUNTANCY","053","020","073","B1"
+"841","YOGA","039","048","087","C1"
+"Result: PASS"
+
+"Roll No:","25605158"
+"Candidate Name:","SURAJ BHATT"
+"Gender:","M"
+"Mother's Name:","REKHA BHATT"
+"Father's Name:","HARI DUTT BHATT"
+"301","ENGLISH CORE","041","020","061","D1"
+"302","HINDI CORE","073","020","093","A1"
+"030","ECONOMICS","057","020","077","B1"
+"054","BUSINESS STUDIES","049","020","069","B2"
+"055","ACCOUNTANCY","056","020","076","B1"
+"841","YOGA","034","048","082","D1"
+"Result: PASS"    
+    </script>
+
+
+
+    <script>
+        // Global storage
+        window.studentDirectory = {};
+        window.allStudentsData = [];
+        window.allSubjectNames = [];
+
+        // Base fields configuration for directory
+        const baseFields = [
+            { id: 'f_roll', label: 'Roll No', default: true },
+            { id: 'f_name', label: 'Name', default: true },
+            { id: 'f_gender', label: 'Gender', default: true },
+            { id: 'f_stream', label: 'Stream', default: true },
+            { id: 'f_mother', label: "Mother's Name", default: false },
+            { id: 'f_father', label: "Father's Name", default: false },
+            { id: 'f_ptop5', label: '% (Top 5)', default: true },
+            { id: 'f_pmain5', label: '% (Main 5)', default: false },
+            { id: 'f_pall6', label: '% (All 6)', default: false },
+        ];
+
+        // --- MODAL LOGIC ---
+        function showStudentModal(rollNo) {
+            const student = window.studentDirectory[rollNo];
+            if (!student) return;
+
+            document.getElementById('modalStudentName').textContent = student.name;
+            document.getElementById('modalStudentRoll').textContent = "Roll No: " + student.roll;
+            document.getElementById('modalStudentStream').textContent = student.stream;
+            document.getElementById('modalStudentGender').textContent = student.gender === 'M' ? 'Male' : (student.gender === 'F' ? 'Female' : student.gender);
+            
+            document.getElementById('modalTotal').textContent = student.totalMarksTop5;
+            document.getElementById('modalTotalAll').textContent = student.totalMarksAll;
+            document.getElementById('modalPercentage').textContent = student.percentageTop5 + "%";
+            
+            const resultEl = document.getElementById('modalResult');
+            resultEl.textContent = student.result;
+            resultEl.className = student.result === 'PASS' 
+                ? 'text-2xl font-black text-brand-accent3 tracking-widest' 
+                : 'text-2xl font-black text-red-500 tracking-widest';
+
+            const tbody = document.getElementById('modalSubjectsTable');
+            tbody.innerHTML = '';
+
+            student.subjectDetails.forEach(sub => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gray-800/50 hover:bg-gray-800/70 transition-colors cursor-pointer relative group";
+                let totalColor = "text-white font-medium";
+                if(parseInt(sub.total) >= 90) totalColor = "text-brand-accent1 font-bold";
+                if(parseInt(sub.total) < 33 || sub.total.includes('RT')) totalColor = "text-red-400 font-bold";
+
+                tr.innerHTML = `
+                    <td class="py-3 pr-4 group-hover:text-brand-accent1 transition-colors">${sub.name} <span class="text-xs text-gray-500 ml-1">(${sub.code})</span></td>
+                    <td class="py-3 text-center text-gray-400">${sub.theory}</td>
+                    <td class="py-3 text-center text-gray-400">${sub.prac}</td>
+                    <td class="py-3 text-center ${totalColor}">${sub.total}</td>
+                    <td class="py-3 text-right text-gray-300 font-semibold flex items-center justify-end gap-2">
+                        ${sub.grade} 
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const modal = document.getElementById('studentModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('studentModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                checkBodyOverflow();
+            }, 300);
+        }
+
+        function showSubjectModal(subjectName) {
+            document.getElementById('modalSubjectTitle').textContent = subjectName;
+            let subjectStudents = window.allStudentsData.filter(s => s.subjects[subjectName] !== undefined).sort((a, b) => b.subjects[subjectName] - a.subjects[subjectName]);
+            const tbody = document.getElementById('modalSubjectLeaderboardTable');
+            tbody.innerHTML = '';
+            
+            let displayRank = 1, prevMarks = -1;
+            subjectStudents.forEach((student, index) => {
+                if (student.subjects[subjectName] !== prevMarks && index !== 0) displayRank = index + 1;
+                prevMarks = student.subjects[subjectName];
+
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gray-800/50 hover:bg-gray-800/50 transition-colors cursor-pointer group";
+                tr.onclick = () => { closeSubjectModal(); setTimeout(() => showStudentModal(student.roll), 300); };
+
+                let markColor = student.subjects[subjectName] >= 90 ? "text-brand-accent1 font-bold group-hover:scale-110 origin-right transition-transform" : (student.subjects[subjectName] < 33 ? "text-red-400 font-bold" : "text-white font-medium");
+                tr.innerHTML = `
+                    <td class="py-4 px-6 text-gray-400">${displayRank}</td>
+                    <td class="py-4 px-6 font-medium text-white group-hover:text-brand-accent1">${student.name}</td>
+                    <td class="py-4 px-6 text-center text-gray-400">${student.roll}</td>
+                    <td class="py-4 px-6 text-right ${markColor}">${student.subjects[subjectName]}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            const modal = document.getElementById('subjectModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSubjectModal() {
+            const modal = document.getElementById('subjectModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); checkBodyOverflow(); }, 300);
+        }
+
+        function showStreamModal(streamName) {
+            document.getElementById('modalStreamTitle').textContent = streamName;
+            let streamStudents = window.allStudentsData.filter(s => s.stream === streamName).sort((a, b) => b.percentageTop5 - a.percentageTop5);
+            const tbody = document.getElementById('modalStreamLeaderboardTable');
+            tbody.innerHTML = '';
+
+            let prevPercentage = -1, displayRank = 1;
+            streamStudents.forEach((student, index) => {
+                if (student.percentageTop5 !== prevPercentage && index !== 0) displayRank = index + 1;
+                prevPercentage = student.percentageTop5;
+
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gray-800/50 hover:bg-gray-800/50 transition-colors cursor-pointer group";
+                tr.onclick = () => { closeStreamModal(); setTimeout(() => showStudentModal(student.roll), 300); };
+                let markColor = student.percentageTop5 >= 90 ? "text-brand-accent1 font-bold group-hover:scale-110 origin-right transition-transform" : (student.percentageTop5 >= 75 ? "text-brand-accent3 font-bold group-hover:scale-110 origin-right transition-transform" : "text-gray-300 font-medium");
+                
+                tr.innerHTML = `
+                    <td class="py-4 px-6 text-gray-400">${displayRank}</td>
+                    <td class="py-4 px-6 font-medium text-white group-hover:text-brand-accent3">${student.name}</td>
+                    <td class="py-4 px-6 text-center text-gray-400">${student.roll}</td>
+                    <td class="py-4 px-6 text-right ${markColor}">${student.percentageTop5}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            const modal = document.getElementById('streamModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeStreamModal() {
+            const modal = document.getElementById('streamModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); checkBodyOverflow(); }, 300);
+        }
+        
+        function openDirectoryModal() {
+            const modal = document.getElementById('directoryModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
+            document.body.style.overflow = 'hidden';
+            updateDirectory();
+        }
+        function closeDirectoryModal() {
+            const modal = document.getElementById('directoryModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); checkBodyOverflow(); }, 300);
+        }
+
+        function checkBodyOverflow() {
+            if (document.getElementById('studentModal').classList.contains('hidden') && 
+                document.getElementById('subjectModal').classList.contains('hidden') && 
+                document.getElementById('streamModal').classList.contains('hidden') &&
+                document.getElementById('directoryModal').classList.contains('hidden')) {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+
+        // --- DIRECTORY LOGIC ---
+        function initDirectoryControls() {
+            const subjSelectFilter = document.getElementById('dirFilterSubject');
+            const sortSelect = document.getElementById('dirSort');
+            const fieldsContainer = document.getElementById('dirFieldsContainer');
+            
+            // Populate dropdowns with subjects
+            window.allSubjectNames.forEach(sub => {
+                let opt = document.createElement('option');
+                opt.value = sub;
+                opt.textContent = sub;
+                subjSelectFilter.appendChild(opt);
+
+                let sortOpt = document.createElement('option');
+                sortOpt.value = "sub_" + sub;
+                sortOpt.textContent = "Subject: " + sub;
+                sortSelect.appendChild(sortOpt);
+            });
+
+            // Populate checkboxes
+            let html = '';
+            baseFields.forEach(f => {
+                html += `
+                <label class="flex items-center gap-2 text-gray-300 cursor-pointer hover:bg-gray-800/50 p-1 rounded transition-colors">
+                    <input type="checkbox" id="${f.id}" class="dir-field-chk accent-brand-accent1 w-4 h-4 rounded bg-gray-800 border-gray-700" ${f.default ? 'checked' : ''} onchange="updateDirectory()">
+                    ${f.label}
+                </label>`;
+            });
+            html += `<hr class="border-gray-700 my-2"><div class="text-xs text-gray-500 mb-1 ml-1">SUBJECT MARKS</div>`;
+            window.allSubjectNames.forEach(sub => {
+                html += `
+                <label class="flex items-center gap-2 text-gray-300 cursor-pointer hover:bg-gray-800/50 p-1 rounded transition-colors">
+                    <input type="checkbox" id="f_sub_${sub}" class="dir-field-chk accent-brand-accent1 w-4 h-4 rounded bg-gray-800 border-gray-700" onchange="updateDirectory()">
+                    ${sub}
+                </label>`;
+            });
+            fieldsContainer.innerHTML = html;
+        }
+
+        function resetDirectory() {
+            document.getElementById('dirFilterStream').value = 'All';
+            document.getElementById('dirFilterGender').value = 'All';
+            document.getElementById('dirFilterSubject').value = 'All';
+            document.getElementById('dirFilterMin').value = '0';
+            document.getElementById('dirFilterMax').value = '100';
+            document.getElementById('dirSort').value = 'pTop5';
+            document.getElementById('dirSortDesc').checked = true;
+            
+            document.querySelectorAll('.dir-field-chk').forEach(chk => {
+                let id = chk.id;
+                let bf = baseFields.find(b => b.id === id);
+                chk.checked = bf ? bf.default : false;
+            });
+            updateDirectory();
+        }
+
+        function updateDirectory() {
+            let students = [...window.allStudentsData];
+            
+            // Get Filters
+            const streamF = document.getElementById('dirFilterStream').value;
+            const genderF = document.getElementById('dirFilterGender').value;
+            const subjF = document.getElementById('dirFilterSubject').value;
+            const minP = parseFloat(document.getElementById('dirFilterMin').value) || 0;
+            const maxP = parseFloat(document.getElementById('dirFilterMax').value) || 100;
+
+            // Apply Filters
+            if(streamF !== 'All') students = students.filter(s => s.stream === streamF);
+            if(genderF !== 'All') students = students.filter(s => s.gender === genderF);
+            if(subjF !== 'All') students = students.filter(s => s.subjects[subjF] !== undefined);
+            students = students.filter(s => s.percentageTop5 >= minP && s.percentageTop5 <= maxP);
+            
+            document.getElementById('dirResultsCount').textContent = students.length;
+
+            // Sort
+            const sortField = document.getElementById('dirSort').value;
+            const desc = document.getElementById('dirSortDesc').checked;
+            const dir = desc ? -1 : 1;
+
+            students.sort((a, b) => {
+                let vA, vB;
+                if(sortField === 'name') { vA = a.name; vB = b.name; }
+                else if(sortField === 'roll') { vA = parseInt(a.roll); vB = parseInt(b.roll); }
+                else if(sortField === 'pTop5') { vA = a.percentageTop5; vB = b.percentageTop5; }
+                else if(sortField === 'pMain5') { vA = a.percentageMain5; vB = b.percentageMain5; }
+                else if(sortField === 'pAll6') { vA = a.percentageAll; vB = b.percentageAll; }
+                else if(sortField.startsWith('sub_')) {
+                    let sub = sortField.replace('sub_', '');
+                    vA = a.subjects[sub] || -1; vB = b.subjects[sub] || -1;
+                }
+                
+                if (vA < vB) return -1 * dir;
+                if (vA > vB) return 1 * dir;
+                return 0;
+            });
+
+            // Get selected fields
+            const activeFields = [];
+            document.querySelectorAll('.dir-field-chk:checked').forEach(chk => activeFields.push(chk.id));
+            
+            // Render Header
+            const thead = document.getElementById('dirTableHeader');
+            let thHtml = '<tr><th class="py-3 px-4 sticky left-0 bg-gray-900/95 z-20">Rank</th>';
+            activeFields.forEach(fid => {
+                let label = '';
+                let bf = baseFields.find(b => b.id === fid);
+                if(bf) label = bf.label;
+                else if(fid.startsWith('f_sub_')) label = fid.replace('f_sub_', '');
+                
+                // Keep Name/Roll sticky if selected
+                let cls = "py-3 px-4";
+                if(fid === 'f_name') cls += " sticky left-[60px] bg-gray-900/95 z-20 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.5)]";
+                thHtml += `<th class="${cls}">${label}</th>`;
+            });
+            thHtml += '</tr>';
+            thead.innerHTML = thHtml;
+
+            // Render Body
+            const tbody = document.getElementById('dirTableBody');
+            let tbHtml = '';
+            students.forEach((s, i) => {
+                tbHtml += `<tr class="hover:bg-gray-800/80 transition-colors cursor-pointer" onclick="showStudentModal('${s.roll}')">`;
+                tbHtml += `<td class="py-3 px-4 sticky left-0 bg-gray-900/90 z-10 font-bold text-gray-500">${i+1}</td>`;
+                
+                activeFields.forEach(fid => {
+                    let val = '-';
+                    let cls = "py-3 px-4";
+                    
+                    if(fid === 'f_roll') val = s.roll;
+                    else if(fid === 'f_name') { val = `<span class="text-white font-medium">${s.name}</span>`; cls += " sticky left-[60px] bg-gray-900/90 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.5)]"; }
+                    else if(fid === 'f_gender') val = s.gender;
+                    else if(fid === 'f_stream') val = s.stream;
+                    else if(fid === 'f_mother') val = s.motherName;
+                    else if(fid === 'f_father') val = s.fatherName;
+                    else if(fid === 'f_ptop5') val = `<span class="text-brand-accent1 font-medium">${s.percentageTop5}%</span>`;
+                    else if(fid === 'f_pmain5') val = `${s.percentageMain5}%`;
+                    else if(fid === 'f_pall6') val = `${s.percentageAll}%`;
+                    else if(fid.startsWith('f_sub_')) {
+                        let sub = fid.replace('f_sub_', '');
+                        if(s.subjects[sub] !== undefined) val = s.subjects[sub];
+                    }
+                    tbHtml += `<td class="${cls}">${val}</td>`;
+                });
+                tbHtml += `</tr>`;
+            });
+            tbody.innerHTML = tbHtml;
+        }
+
+
+        // --- 2. DATA PARSING ENGINE ---
+        function parseData() {
+            const rawText = document.getElementById('raw-data').textContent;
+            const lines = rawText.split('\n');
+            const students = [];
+            let currentStudent = null;
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (!line) return;
+
+                if (line.startsWith('"Roll No:"')) {
+                    if (currentStudent) students.push(currentStudent);
+                    let rollMatch = line.match(/"Roll No:","(\d+)"/);
+                    currentStudent = { 
+                        roll: rollMatch ? rollMatch[1] : 'Unknown', 
+                        subjects: {},
+                        subjectDetails: [],
+                        gender: 'U',
+                        motherName: 'N/A',
+                        fatherName: 'N/A'
+                    };
+                } else if (line.startsWith('"Candidate Name:')) {
+                    let nameMatch = line.match(/"Candidate Name:(?:Mother's Name:)?","([^"]+)"/);
+                    if (nameMatch) {
+                        let nameParts = nameMatch[1].replace(/([a-z])([A-Z])/g, '$1 $2').trim();
+                        let words = nameParts.split(/\s+/);
+                        if(words.length > 3) {
+                             currentStudent.name = words.slice(0, Math.ceil(words.length/2)).join(' '); 
+                        } else {
+                             currentStudent.name = nameParts;
+                        }
+                    }
+                } else if (line.startsWith('"Gender:"')) {
+                    let genderMatch = line.match(/"Gender:","([^"]+)"/);
+                    if(genderMatch) currentStudent.gender = genderMatch[1];
+                } else if (line.startsWith('"Result:')) {
+                    let resMatch = line.match(/"Result:\s*([A-Z]+)"/);
+                    if (resMatch) currentStudent.result = resMatch[1];
+                } else {
+                    let parts = line.split('","').map(p => p.replace(/"/g, '').trim());
+                    if (parts.length >= 5) {
+                        let code = parts[0];
+                        let name = parts[1];
+                        let theory = parts[2] || "-";
+                        let prac = parts[3] || "-";
+                        let totalStr = parts[4];
+                        let grade = parts[5] || "-";
+                        
+                        let totalNumeric = parseInt(totalStr.replace('RT', '').trim(), 10);
+                        
+                        if (!['500', '502', '503'].includes(code)) {
+                            currentStudent.subjectDetails.push({ code, name, theory, prac, total: totalStr, grade });
+                            if (!isNaN(totalNumeric)) {
+                                currentStudent.subjects[name] = totalNumeric;
+                                if(!window.allSubjectNames.includes(name)) window.allSubjectNames.push(name);
+                            }
+                        }
+                    }
+                }
+            });
+            if (currentStudent) students.push(currentStudent);
+            window.allSubjectNames.sort();
+            
+            return processAnalytics(students);
+        }
+
+        // --- 3. ANALYTICS ENGINE ---
+        function processAnalytics(students) {
+            let totalStudents = students.length;
+            let streamStats = { PCM: [], PCB: [], Commerce: [] };
+            let subjectStats = {};
+            
+            // Gender stats
+            let genderStats = { 
+                M: { count: 0, top5Total: 0, highest: 0, above75: 0 }, 
+                F: { count: 0, top5Total: 0, highest: 0, above75: 0 } 
+            };
+            
+            students.forEach(s => {
+                let marksArray = s.subjectDetails.map(sub => parseInt(sub.total.replace('RT','').trim(), 10) || 0);
+                
+                // Calculations for different percentage types
+                let sortedMarks = [...marksArray].sort((a, b) => b - a);
+                s.totalMarksTop5 = sortedMarks.slice(0, 5).reduce((sum, val) => sum + val, 0);
+                s.percentageTop5 = parseFloat((s.totalMarksTop5 / 5).toFixed(2));
+
+                let main5Marks = marksArray.slice(0, 5);
+                s.totalMarksMain5 = main5Marks.reduce((sum, val) => sum + val, 0);
+                s.percentageMain5 = parseFloat((s.totalMarksMain5 / (main5Marks.length || 1)).toFixed(2));
+
+                s.totalMarksAll = marksArray.reduce((sum, val) => sum + val, 0);
+                s.percentageAll = parseFloat((s.totalMarksAll / (marksArray.length || 1)).toFixed(2));
+                
+                // Assign Stream
+                if (s.subjects['ACCOUNTANCY']) s.stream = 'Commerce';
+                else if (s.subjects['BIOLOGY']) s.stream = 'PCB';
+                else if (s.subjects['MATHEMATICS']) s.stream = 'PCM';
+                else s.stream = 'Other';
+
+                if(streamStats[s.stream]) streamStats[s.stream].push(s);
+
+                // Populate gender stats
+                if (s.gender === 'M' || s.gender === 'F') {
+                    genderStats[s.gender].count++;
+                    genderStats[s.gender].top5Total += s.percentageTop5;
+                    if(s.percentageTop5 > genderStats[s.gender].highest) genderStats[s.gender].highest = s.percentageTop5;
+                    if(s.percentageTop5 >= 75) genderStats[s.gender].above75++;
+                }
+
+                // Subject stats
+                for (let [sub, mark] of Object.entries(s.subjects)) {
+                    if (!subjectStats[sub]) {
+                        subjectStats[sub] = { name: sub, marks: [], marksM: [], marksF: [], highest: 0, lowest: 100, above90: 0, above75: 0, fails: 0 };
+                    }
+                    subjectStats[sub].marks.push(mark);
+                    if(s.gender === 'M') subjectStats[sub].marksM.push(mark);
+                    if(s.gender === 'F') subjectStats[sub].marksF.push(mark);
+
+                    if (mark > subjectStats[sub].highest) subjectStats[sub].highest = mark;
+                    if (mark < subjectStats[sub].lowest) subjectStats[sub].lowest = mark;
+                    if (mark >= 90) subjectStats[sub].above90++;
+                    if (mark >= 75) subjectStats[sub].above75++;
+                    if (mark < 33) subjectStats[sub].fails++;
+                }
+
+                window.studentDirectory[s.roll] = s;
+            });
+
+            students.sort((a, b) => b.percentageTop5 - a.percentageTop5);
+            window.allStudentsData = students;
+
+            let allPercentages = students.map(s => s.percentageTop5);
+            let avgPercentage = (allPercentages.reduce((a, b) => a + b, 0) / (totalStudents || 1)).toFixed(2);
+            let highestPercentage = allPercentages.length > 0 ? Math.max(...allPercentages) : 0;
+            let lowestPercentage = allPercentages.length > 0 ? Math.min(...allPercentages) : 0;
+            let medianPercentage = allPercentages.length > 0 ? allPercentages[Math.floor(totalStudents / 2)] : 0;
+            
+            let above90 = students.filter(s => s.percentageTop5 >= 90).length;
+            let above80 = students.filter(s => s.percentageTop5 >= 80).length;
+            let below50 = students.filter(s => s.percentageTop5 < 50).length;
+
+            for (let sub in subjectStats) {
+                let s = subjectStats[sub];
+                s.average = (s.marks.reduce((a,b)=>a+b,0) / s.marks.length).toFixed(2);
+                s.topStudents = students.filter(st => st.subjects[sub] === s.highest).map(st => st.name);
+            }
+
+            for (let stream in streamStats) {
+                let st = streamStats[stream];
+                if (st.length > 0) {
+                    let avgs = st.map(s => s.percentageTop5);
+                    st.avg = (avgs.reduce((a,b)=>a+b,0)/avgs.length).toFixed(2);
+                    st.highest = Math.max(...avgs);
+                } else {
+                    st.avg = 0; st.highest = 0;
+                }
+            }
+            
+            // Finalize gender stats averages
+            if(genderStats.M.count > 0) genderStats.M.avg = (genderStats.M.top5Total / genderStats.M.count).toFixed(2);
+            if(genderStats.F.count > 0) genderStats.F.avg = (genderStats.F.top5Total / genderStats.F.count).toFixed(2);
+
+            return {
+                students, totalStudents, avgPercentage, highestPercentage, lowestPercentage, medianPercentage,
+                above90, above80, below50, streamStats, subjectStats, genderStats
+            };
+        }
+
+        // --- 4. UI RENDERING ENGINE ---
+        function renderUI(data) {
+            const app = document.getElementById('app-content');
+            
+            app.innerHTML = `
+                ${renderCover(data)}
+                ${renderOverview(data)}
+                ${renderToppers(data)}
+                ${renderSubjects(data)}
+                ${renderStreams(data)}
+                ${renderGenderAnalysis(data)}
+                ${renderDistribution(data)}
+                ${renderInsights(data)}
+                ${renderFooter()}
+            `;
+
+            initDirectoryControls();
+            initCharts(data);
+        }
+
+        function renderCover(data) {
+            return `
+            <section id="cover" class="min-h-screen flex flex-col items-center justify-center relative pt-16">
+                <div class="text-center animate-fade-up z-10 px-4">
+                    <h2 class="text-xl md:text-2xl font-medium tracking-[0.2em] text-brand-accent2 mb-4">PM SHRI SCHOOL JNV CHAMPAWAT</h2>
+                    <h1 class="text-5xl md:text-7xl font-display font-extrabold text-white mb-6 leading-tight">
+                        CBSE PERFORMANCE <br/>
+                        <span class="text-gradient">BATCH REPORT</span>
+                    </h1>
+                    <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12">Comprehensive Class XII Analytics & Student Performance Evaluation for the Academic Year 2026.</p>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-4xl mx-auto">
+                        <div class="glass-card p-6 rounded-2xl glow-border cursor-pointer group" onclick="openDirectoryModal()" title="View Complete Student Directory">
+                            <div class="text-sm text-gray-400 mb-1 group-hover:text-brand-accent1 transition-colors">Total Students <svg class="inline w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></div>
+                            <div class="text-3xl font-bold text-white group-hover:text-brand-accent1 transition-colors">${data.totalStudents}</div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl glow-border">
+                            <div class="text-sm text-gray-400 mb-1">Highest Score</div>
+                            <div class="text-3xl font-bold text-brand-accent1">${data.highestPercentage}%</div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl glow-border">
+                            <div class="text-sm text-gray-400 mb-1">Class Average</div>
+                            <div class="text-3xl font-bold text-brand-accent3">${data.avgPercentage}%</div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl glow-border">
+                            <div class="text-sm text-gray-400 mb-1">90%+ Achievers</div>
+                            <div class="text-3xl font-bold text-brand-accent2">${data.above90}</div>
+                        </div>
+                    </div>
+                </div>
+            </section>`;
+        }
+
+        function renderOverview(data) {
+            return `
+            <section id="overview" class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-brand-border">
+                <h2 class="text-3xl font-display font-bold mb-10 flex items-center gap-3">
+                    <span class="w-8 h-1 bg-brand-accent1 rounded-full"></span> Batch Overview
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="glass-card p-8 rounded-2xl md:col-span-2">
+                        <h3 class="text-xl font-semibold mb-6">Performance Distribution</h3>
+                        <div class="h-64 relative">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-6">
+                        <div class="glass-card p-6 rounded-2xl glow-border-purple flex-1 flex flex-col justify-center">
+                            <h4 class="text-gray-400 text-sm font-medium">Median Percentage</h4>
+                            <div class="text-4xl font-bold text-white mt-2">${data.medianPercentage}%</div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl glow-border flex-1 flex flex-col justify-center">
+                            <h4 class="text-gray-400 text-sm font-medium">Students Above 80%</h4>
+                            <div class="text-4xl font-bold text-white mt-2">${data.above80} <span class="text-lg text-gray-500 font-normal">/ ${data.totalStudents}</span></div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl border border-red-500/30 flex-1 flex flex-col justify-center">
+                            <h4 class="text-gray-400 text-sm font-medium">Students Below 50%</h4>
+                            <div class="text-4xl font-bold text-white mt-2">${data.below50}</div>
+                        </div>
+                    </div>
+                </div>
+            </section>`;
+        }
+
+        function renderToppers(data) {
+            const top3 = data.students.slice(0, 3);
+            let top3HTML = top3.map((s, i) => {
+                const colors = ['border-yellow-400 shadow-yellow-400/20', 'border-gray-300 shadow-gray-300/20', 'border-amber-600 shadow-amber-600/20'];
+                const textColors = ['text-yellow-400', 'text-gray-300', 'text-amber-600'];
+                return `
+                <div class="glass-card rounded-2xl p-6 border ${colors[i]} transform hover:-translate-y-2 transition-transform duration-300 flex flex-col items-center text-center relative overflow-hidden cursor-pointer group" onclick="showStudentModal('${s.roll}')">
+                    <div class="absolute -top-10 -right-10 w-24 h-24 bg-white opacity-5 rounded-full blur-xl group-hover:bg-brand-accent1 transition-colors"></div>
+                    <div class="text-5xl font-display font-black ${textColors[i]} mb-2">#${i+1}</div>
+                    <h3 class="text-xl font-bold text-white mb-1 uppercase tracking-wide group-hover:text-brand-accent1 transition-colors">${s.name}</h3>
+                    <p class="text-sm text-gray-400 mb-4">Roll: ${s.roll} • ${s.stream}</p>
+                    <div class="text-3xl font-bold text-brand-accent1">${s.percentageTop5}%</div>
+                    <div class="text-sm text-gray-500 mt-1">${s.totalMarksTop5} / 500 Marks (Top 5)</div>
+                </div>`;
+            }).join('');
+
+            let subjToppersHTML = Object.values(data.subjectStats).map(s => `
+                <div class="glass-card p-4 rounded-xl flex justify-between items-center hover:bg-gray-800/50 transition-colors cursor-pointer group border border-transparent hover:border-brand-accent2/30" onclick="showSubjectModal('${s.name}')">
+                    <div>
+                        <div class="text-xs text-brand-accent2 font-bold tracking-wider uppercase mb-1 flex items-center gap-2">${s.name}</div>
+                        <div class="text-white font-medium truncate max-w-[200px] group-hover:text-brand-accent1" title="${s.topStudents.join(', ')}">${s.topStudents.join(', ')}</div>
+                    </div>
+                    <div class="text-2xl font-bold text-brand-accent1 group-hover:scale-110 transition-transform origin-right">${s.highest}</div>
+                </div>
+            `).join('');
+
+            return `
+            <section id="toppers" class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-brand-border">
+                <h2 class="text-3xl font-display font-bold mb-10 flex items-center gap-3">
+                    <span class="w-8 h-1 bg-brand-accent2 rounded-full"></span> Hall of Fame
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">${top3HTML}</div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    <div class="flex flex-col justify-center items-center text-center glass-card p-10 rounded-2xl border-brand-accent1/30 cursor-pointer hover:bg-gray-800/60 transition-colors group" onclick="openDirectoryModal()">
+                        <svg class="w-16 h-16 text-brand-accent1 mb-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <h3 class="text-2xl font-bold mb-2">Complete Leaderboard & Directory</h3>
+                        <p class="text-gray-400 mb-6">Filter, sort, and customize student data dynamically.</p>
+                        <button class="bg-brand-accent1/20 text-brand-accent1 border border-brand-accent1 px-6 py-2 rounded-lg font-medium group-hover:bg-brand-accent1 group-hover:text-gray-900 transition-colors">Open Directory Mode</button>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6 flex items-center gap-2"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg> Subject Toppers</h3>
+                        <div class="flex flex-col gap-3 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
+                            ${subjToppersHTML}
+                        </div>
+                    </div>
+                </div>
+            </section>`;
+        }
+
+        function renderSubjects(data) {
+            let subjectCards = Object.values(data.subjectStats).map(s => {
+                let rtCount = 0;
+                data.students.forEach(student => {
+                    let subjectDetail = student.subjectDetails.find(detail => detail.name === s.name);
+                    if (subjectDetail && typeof subjectDetail.total === 'string' && subjectDetail.total.includes('RT')) rtCount++;
+                });
+                let rtRate = ((rtCount / s.marks.length) * 100).toFixed(1);
+                return `
+                <div class="glass-card p-6 rounded-2xl glow-border hover:-translate-y-1 transition-transform">
+                    <h3 class="text-lg font-bold text-white mb-4 truncate">${s.name}</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div><div class="text-xs text-gray-500 uppercase">Average</div><div class="text-xl font-semibold text-brand-accent3">${s.average}</div></div>
+                        <div><div class="text-xs text-gray-500 uppercase">Highest</div><div class="text-xl font-semibold text-brand-accent1">${s.highest}</div></div>
+                    </div>
+                    <div class="space-y-2 mt-4 pt-4 border-t border-gray-800">
+                        <div class="flex justify-between text-sm"><span class="text-gray-400">Scores 90+</span><span class="text-white font-medium">${s.above90}</span></div>
+                        <div class="flex justify-between text-sm"><span class="text-gray-400">Scores 75+</span><span class="text-white font-medium">${s.above75}</span></div>
+                        <div class="flex justify-between text-sm"><span class="text-gray-400">Repeat Theory</span><span class="${rtCount > 0 ? 'text-red-400' : 'text-gray-400'} font-medium">${rtCount} (${rtRate}%)</span></div>
+                    </div>
+                </div>`;
+            }).join('');
+            return `
+            <section id="subjects" class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-brand-border">
+                <h2 class="text-3xl font-display font-bold mb-10 flex items-center gap-3"><span class="w-8 h-1 bg-brand-accent3 rounded-full"></span> Subject Analytics</h2>
+                <div class="glass-card p-6 md:p-8 rounded-2xl mb-10"><div class="h-80 w-full relative"><canvas id="subjectAvgChart"></canvas></div></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">${subjectCards}</div>
+            </section>`;
+        }
+
+        function renderStreams(data) {
+            let cards = Object.keys(data.streamStats).filter(k => k !== 'Other').map(stream => {
+                let s = data.streamStats[stream];
+                if(s.length === 0) return '';
+                return `
+                <div class="glass-card p-8 rounded-2xl flex-1 border border-gray-700/50 hover:border-brand-accent3/50 transition-colors hover:shadow-lg hover:shadow-brand-accent3/10 cursor-pointer group relative" onclick="showStreamModal('${stream}')">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-brand-accent3">${stream}</h3>
+                        <svg class="w-5 h-5 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-6">${s.length} Students</p>
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1"><span class="text-gray-400">Average %</span><span class="font-bold text-brand-accent3">${s.avg}%</span></div>
+                            <div class="w-full bg-gray-800 rounded-full h-2"><div class="bg-brand-accent3 h-2 rounded-full" style="width: ${s.avg}%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1"><span class="text-gray-400">Highest %</span><span class="font-bold text-brand-accent1">${s.highest}%</span></div>
+                            <div class="w-full bg-gray-800 rounded-full h-2"><div class="bg-brand-accent1 h-2 rounded-full" style="width: ${s.highest}%"></div></div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+            return `
+            <section id="streams" class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-brand-border">
+                <h2 class="text-3xl font-display font-bold mb-10 flex items-center gap-3"><span class="w-8 h-1 bg-brand-accent2 rounded-full"></span> Stream Comparison</h2>
+                <div class="flex flex-col md:flex-row gap-6 mb-10">${cards}</div>
+                <div class="glass-card p-6 md:p-8 rounded-2xl"><div class="h-80 w-full relative"><canvas id="streamChart"></canvas></div></div>
+            </section>`;
+        }
+
+        function renderGenderAnalysis(data) {
+            return `
+            <section id="gender" class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-brand-border">
+                <h2 class="text-3xl font-display font-bold mb-10 flex items-center gap-3">
+                    <span class="w-8 h-1 bg-pink-500 rounded-full"></span> Gender-wise Analysis
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-blue-500 shadow-lg shadow-blue-500/5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg> 
+                                Male Candidates
+                            </h3>
+                            <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm font-bold">${data.genderStats.M.count} Students</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mt-6">
+                            <div><div class="text-xs text-gray-500 uppercase">Average Score</div><div class="text-2xl font-semibold text-white">${data.genderStats.M.avg || 0}%</div></div>
+                            <div><div class="text-xs text-gray-500 uppercase">Highest Score</div><div class="text-2xl font-semibold text-brand-accent1">${data.genderStats.M.highest}%</div></div>
+                            <div><div class="text-xs text-gray-500 uppercase">Distinction (75%+)</div><div class="text-2xl font-semibold text-brand-accent3">${data.genderStats.M.above75}</div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-pink-500 shadow-lg shadow-pink-500/5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <svg class="w-6 h-6 text-pink-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg> 
+                                Female Candidates
+                            </h3>
+                            <span class="bg-pink-500/20 text-pink-400 px-3 py-1 rounded-full text-sm font-bold">${data.genderStats.F.count} Students</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mt-6">
+                            <div><div class="text-xs text-gray-500 uppercase">Average Score</div><div class="text-2xl font-semibold text-white">${data.genderStats.F.avg || 0}%</div></div>
+                            <div><div class="text-xs text-gray-500 uppercase">Highest Score</div><div class="text-2xl font-semibold text-brand-accent1">${data.genderStats.F.highest}%</div></div>
+                            <div><div class="text-xs text-gray-500 uppercase">Distinction (75%+)</div><div class="text-2xl font-semibold text-brand-accent3">${data.genderStats.F.above75}</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-6 md:p-8 rounded-2xl">
+                    <h3 class="text-lg font-medium text-gray-300 mb-4 text-center">Subject Average Performance by Gender</h3>
+                    <div class="h-96 w-full relative"><canvas id="genderSubjectChart"></canvas></div>
+                </div>
+            </section>`;
+        }
+
+        function renderDistribution(data) {
+            return `
+            <section class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-brand-border">
+                <h2 class="text-3xl font-display font-bold mb-10 flex items-center gap-3">
+                    <span class="w-8 h-1 bg-brand-accent1 rounded-full"></span> Grade Distribution Matrix
+                </h2>
+                <div class="glass-card p-6 md:p-8 rounded-2xl"><div class="h-96 w-full relative"><canvas id="distChart"></canvas></div></div>
+            </section>`;
+        }
+
+        function renderInsights(data) {
+            let subjectAvgs = Object.values(data.subjectStats).sort((a,b) => b.average - a.average);
+            let strongestSub = subjectAvgs.length > 0 ? subjectAvgs[0].name : 'N/A';
+            let weakestSub = subjectAvgs.length > 0 ? subjectAvgs[subjectAvgs.length - 1].name : 'N/A';
+            let streams = Object.entries(data.streamStats).filter(([k,v]) => k !== 'Other' && v.length > 0).sort((a,b) => b[1].avg - a[1].avg);
+            let topStream = streams[0] ? streams[0][0] : 'N/A';
+            let above90Percent = data.totalStudents > 0 ? ((data.above90/data.totalStudents)*100).toFixed(1) : 0;
+            let below50Percent = data.totalStudents > 0 ? ((data.below50/data.totalStudents)*100).toFixed(1) : 0;
+            let above75 = data.students.filter(s => s.percentageTop5 >= 75).length;
+            let above75Percent = data.totalStudents > 0 ? ((above75/data.totalStudents)*100).toFixed(1) : 0;
+            
+            let compStudents = data.students.filter(s => s.result === 'COMP').length;
+            let rtInstances = 0;
+            data.students.forEach(s => { s.subjectDetails.forEach(sub => { if (typeof sub.total === 'string' && sub.total.includes('RT')) rtInstances++; }); });
+
+            return `
+            <section id="insights" class="py-20 px-4 md:px-8 max-w-7xl mx-auto border-t border-brand-border">
+                <h2 class="text-3xl font-display font-bold mb-10 flex items-center gap-3"><span class="w-8 h-1 bg-brand-accent3 rounded-full"></span> AI Observations & Insights</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-card p-6 rounded-2xl flex items-start gap-4 hover:bg-gray-800/40">
+                        <div class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">📈</div>
+                        <div><h4 class="text-lg font-bold text-white mb-2">Class Performance Base</h4><p class="text-gray-400 text-sm">The class maintains a solid average of <span class="text-white font-medium">${data.avgPercentage}%</span>. ${data.above80} students (${data.totalStudents > 0 ? ((data.above80/data.totalStudents)*100).toFixed(1) : 0}%) scored above 80%.</p></div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl flex items-start gap-4 hover:bg-gray-800/40">
+                        <div class="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">⭐</div>
+                        <div><h4 class="text-lg font-bold text-white mb-2">Subject Strengths</h4><p class="text-gray-400 text-sm">Strongest subject is <span class="text-brand-accent3 font-medium">${strongestSub}</span> with excellent overall grasp.</p></div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl flex items-start gap-4 hover:bg-gray-800/40">
+                        <div class="w-12 h-12 rounded-full bg-yellow-500/10 flex items-center justify-center shrink-0">🏆</div>
+                        <div><h4 class="text-lg font-bold text-white mb-2">Excellence Benchmark</h4><p class="text-gray-400 text-sm"><span class="text-yellow-400 font-medium">${data.above90} students</span> (${above90Percent}%) secured 90% and above.</p></div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl flex items-start gap-4 hover:bg-gray-800/40">
+                        <div class="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">🌟</div>
+                        <div><h4 class="text-lg font-bold text-white mb-2">Distinction Rate</h4><p class="text-gray-400 text-sm"><span class="text-emerald-400 font-medium">${above75} students</span> (${above75Percent}%) achieved a distinction (75%+).</p></div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl flex items-start gap-4 hover:bg-gray-800/40">
+                        <div class="w-12 h-12 rounded-full bg-amber-600/10 flex items-center justify-center shrink-0">⚠️</div>
+                        <div><h4 class="text-lg font-bold text-white mb-2">Compartment & RT Trends</h4><p class="text-gray-400 text-sm">${compStudents > 0 || rtInstances > 0 ? `<span class="text-amber-500 font-medium">${compStudents} student(s)</span> in COMP and <span class="text-amber-500 font-medium">${rtInstances}</span> RT instances.` : `Zero COMP and zero RT instances recorded. Clean progression!`}</p></div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl flex items-start gap-4 hover:bg-gray-800/40">
+                        <div class="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">📊</div>
+                        <div><h4 class="text-lg font-bold text-white mb-2">Stream Dominance</h4><p class="text-gray-400 text-sm">The <span class="text-brand-accent2 font-medium">${topStream}</span> stream leads the batch with the highest average performance.</p></div>
+                    </div>
+                </div>
+            </section>`;
+        }
+
+        function renderFooter() {
+            return `
+            <footer class="py-12 border-t border-brand-border text-center">
+                <h2 class="text-2xl font-display font-bold text-gray-500 mb-4">END OF REPORT</h2>
+                <p class="text-gray-600 italic max-w-md mx-auto">"Education is not the learning of facts, but the training of the mind to think." - Albert Einstein</p>
+                <p class="text-gray-600 italic max-w-md mx-auto">BY- PAWAN BHATT</p>
+                <div class="mt-8 text-xs text-gray-700">Generated automatically from CBSE Result Data • PM SHRI JNV CHAMPAWAT</div>
+            </footer>`;
+        }
+
+        // --- 5. CHART.JS INITIALIZATION ---
+        function initCharts(data) {
+            Chart.defaults.color = '#9ca3af';
+            Chart.defaults.font.family = 'Inter';
+            const tc = { backgroundColor: 'rgba(17, 24, 39, 0.9)', titleColor: '#fff', bodyColor: '#e5e7eb', borderColor: 'rgba(31, 41, 55, 1)', borderWidth: 1, padding: 12, boxPadding: 4 };
+
+            // Performance Doughnut
+            new Chart(document.getElementById('performanceChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Outstanding (90%+)', 'Distinction (75-89%)', 'First Class (60-74%)', 'Average (<60%)'],
+                    datasets: [{
+                        data: [data.above90, data.students.filter(s => s.percentageTop5 >= 75 && s.percentageTop5 < 90).length, data.students.filter(s => s.percentageTop5 >= 60 && s.percentageTop5 < 75).length, data.students.filter(s => s.percentageTop5 < 60).length],
+                        backgroundColor: ['#00F0FF', '#10B981', '#8B5CF6', '#374151'], borderWidth: 0, hoverOffset: 6
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#e5e7eb' } }, tooltip: tc }, cutout: '75%' }
+            });
+
+            // Subject Bar
+            const sortedSubjects = Object.values(data.subjectStats).sort((a,b) => b.average - a.average);
+            new Chart(document.getElementById('subjectAvgChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: sortedSubjects.map(s => s.name),
+                    datasets: [
+                        { label: 'Class Avg', data: sortedSubjects.map(s => s.average), backgroundColor: 'rgba(0, 240, 255, 0.2)', borderColor: '#00F0FF', borderWidth: 1, borderRadius: 4 },
+                        { label: 'Highest', data: sortedSubjects.map(s => s.highest), backgroundColor: 'rgba(139, 92, 246, 0.1)', borderColor: '#8B5CF6', borderWidth: 1, borderRadius: 4 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { max: 100, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } }, plugins: { tooltip: tc } }
+            });
+
+            // Stream Bar
+            const streams = ['PCM', 'PCB', 'Commerce'];
+            new Chart(document.getElementById('streamChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: streams,
+                    datasets: [{ label: 'Stream Avg %', data: streams.map(st => data.streamStats[st]?.avg || 0), backgroundColor: ['rgba(0, 240, 255, 0.6)', 'rgba(16, 185, 129, 0.6)', 'rgba(139, 92, 246, 0.6)'], borderRadius: 8 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: tc }, scales: { y: { max: 100, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+            });
+
+            // Gender Subject Comparison
+            let genderSubjLabels = [];
+            let genderSubjMale = [];
+            let genderSubjFemale = [];
+            sortedSubjects.forEach(s => {
+                genderSubjLabels.push(s.name);
+                let mAvg = s.marksM.length ? (s.marksM.reduce((a,b)=>a+b,0)/s.marksM.length).toFixed(1) : 0;
+                let fAvg = s.marksF.length ? (s.marksF.reduce((a,b)=>a+b,0)/s.marksF.length).toFixed(1) : 0;
+                genderSubjMale.push(mAvg);
+                genderSubjFemale.push(fAvg);
+            });
+            
+            new Chart(document.getElementById('genderSubjectChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: genderSubjLabels,
+                    datasets: [
+                        { label: 'Boys Average', data: genderSubjMale, backgroundColor: 'rgba(59, 130, 246, 0.7)', borderRadius: 4 },
+                        { label: 'Girls Average', data: genderSubjFemale, backgroundColor: 'rgba(236, 72, 153, 0.7)', borderRadius: 4 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { tooltip: tc }, scales: { y: { max: 100, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+            });
+
+            // Dist Histogram
+            let bins = { '<40':0, '40-50':0, '50-60':0, '60-70':0, '70-80':0, '80-90':0, '90-100':0 };
+            data.students.forEach(s => {
+                let p = s.percentageTop5;
+                if(p < 40) bins['<40']++;
+                else if(p < 50) bins['40-50']++;
+                else if(p < 60) bins['50-60']++;
+                else if(p < 70) bins['60-70']++;
+                else if(p < 80) bins['70-80']++;
+                else if(p < 90) bins['80-90']++;
+                else bins['90-100']++;
+            });
+            new Chart(document.getElementById('distChart').getContext('2d'), {
+                type: 'bar',
+                data: { labels: Object.keys(bins), datasets: [{ label: 'Students', data: Object.values(bins), backgroundColor: 'rgba(139, 92, 246, 0.8)', borderRadius: 6, barPercentage: 0.9, categoryPercentage: 1.0 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: tc }, scales: { y: { ticks: { stepSize: 2 }, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+            });
+        }
+
+        // Initialize application
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const analyticsData = parseData();
+                renderUI(analyticsData);
+            }, 500);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (!document.getElementById('studentModal').classList.contains('hidden')) closeModal();
+                if (!document.getElementById('subjectModal').classList.contains('hidden')) closeSubjectModal();
+                if (!document.getElementById('streamModal').classList.contains('hidden')) closeStreamModal();
+                if (!document.getElementById('directoryModal').classList.contains('hidden')) closeDirectoryModal();
+            }
+        });
+    </script>
+</body>
+</html>
