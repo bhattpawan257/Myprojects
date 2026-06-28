@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <script src="scripts/script.js" defer></script>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <title>calculator</title>
+</head>
+<body>
+  <div class="calc">
+    <div class="display">
+      <p id="disp">0</p>
+    </div>
+    <div class="actions">
+      <button onclick="cbutton()">C</button>
+      <button onclick="eraseb()"><i class="fa-solid fa-delete-left"></i></button>
+      <button onclick="oppress('%')">%</button>
+      <button onclick="eqpress()">=</button> 
+    </div>
+    <div class="arith">
+      <div class="numpad">
+        <button onclick="buttonpress(7)">7</button><button onclick="buttonpress(8)">8</button><button onclick="buttonpress(9)">9</button>
+        <button onclick="buttonpress(4)">4</button><button onclick="buttonpress(5)">5</button><button onclick="buttonpress(6)">6</button>
+        <button onclick="buttonpress(1)">1</button><button onclick="buttonpress(2)">2</button><button onclick="buttonpress(3)">3</button>
+        <button >.</button><button onclick="buttonpress(0)">0</button><button >+/-</button>
+      </div> 
+      <div class="operators">
+        <button onclick="oppress('x')">×</button>
+        <button onclick="oppress('÷')">÷</button>
+        <button onclick="oppress('-')">-</button>
+        <button onclick="oppress('+')">+</button>
+      </div> 
+    </div>
+  </div>
+</body>
+</html>
